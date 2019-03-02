@@ -11,4 +11,4 @@ Proposed file structure
             |__Project B
             ....
             |__Project N
-        |__std-dev-images  
+            |__std-dev-images  
