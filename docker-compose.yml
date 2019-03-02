@@ -1,10 +1,18 @@
 version: '3'
 
 services:
+## GO ##############################################
+  go:
+    container_name: golang
+    build:
+      context: ./goland
+    volumes:
+     - ./../:app
+
 ### COMPOSER ##############################################
   composer:
     build:
-      context: ./composer
+      context: ./DockerFiles/composer
     volumes:
      - ./../:/app
     entrypoint:
@@ -15,12 +23,12 @@ services:
 ### NGINX ##############################################
   nginx:
     build:
-      context: ./nginx
+      context: ./DockerFiles/nginx
     volumes:
-     - ./nginx/:/etc/nginx/custom
-     - ./..:/usr/share/nginx/
+     - ./DockerFiles/nginx:/etc/nginx/custom
+     - ./../:/usr/share/nginx/
     ports:
-     - "5000:80"
+     - "80:80"
     depends_on:
      - phpfpm
      - mysql
@@ -31,8 +39,6 @@ services:
   mysql:
     image: 'mysql:8'
     command: --default-authentication-plugin=mysql_native_password
-    volumes:
-     - ./mysql:/sql.share
     ports:
      - '3399:3306'
     networks:
@@ -41,15 +47,30 @@ services:
      - MYSQL_ROOT_PASSWORD=root
 
 ### PHP-FPM ##############################################
-  laradock-php-fpm:
+  phpfpm:
+    working_dir: '/usr/share/nginx/'
+    volumes:
+     - ./../:/usr/share/nginx/
     build:
-      context: ./laradock-php-fpm
+      context: ./DockerFiles/laradock-php-fpm
       args:
         - LARADOCK_PHP_VERSION=7.2
+        - INSTALL_MYSQL_CLIENT=true
+        - INSTALL_MYSQLI=true
     networks:
      - backend
 
-### PHP-FPM ##############################################
+### ADMINER ##############################################
+  adminer:
+    volumes:
+     - ./../:/app
+    image: adminer
+    ports:
+     - '8080:8080'
+    networks:
+     - backend
+
+### NODE ##############################################
 
   node:
     container_name: "node85"
@@ -60,7 +81,7 @@ services:
       dockerfile: Dockerfile
     working_dir: /home/node/app
     volumes:
-     - ../:/home/node/app
+     - ./../:/home/node/app
 
 networks:
     backend:
