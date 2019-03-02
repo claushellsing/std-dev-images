@@ -5,14 +5,14 @@ services:
   go:
     container_name: golang
     build:
-      context: ./goland
+      context: ./Dockerfiles/golang
     volumes:
-     - ./../:app
+     - ./../:/app
 
 ### COMPOSER ##############################################
   composer:
     build:
-      context: ./DockerFiles/composer
+      context: ./Dockerfiles/composer
     volumes:
      - ./../:/app
     entrypoint:
@@ -23,7 +23,7 @@ services:
 ### NGINX ##############################################
   nginx:
     build:
-      context: ./DockerFiles/nginx
+      context: ./Dockerfiles/nginx
     volumes:
      - ./DockerFiles/nginx:/etc/nginx/custom
      - ./../:/usr/share/nginx/
@@ -52,7 +52,7 @@ services:
     volumes:
      - ./../:/usr/share/nginx/
     build:
-      context: ./DockerFiles/laradock-php-fpm
+      context: ./Dockerfiles/laradock-php-fpm
       args:
         - LARADOCK_PHP_VERSION=7.2
         - INSTALL_MYSQL_CLIENT=true
@@ -77,8 +77,7 @@ services:
     build:
       args:
         version: '8.15'
-      context: ./node
-      dockerfile: Dockerfile
+      context: ./Dockerfiles/node
     working_dir: /home/node/app
     volumes:
      - ./../:/home/node/app
