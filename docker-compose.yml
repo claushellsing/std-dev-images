@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+### COMPOSER ##############################################
+  composer:
+    build:
+      context: ./composer
+    volumes:
+     - ./../:/app
+    entrypoint:
+     - tail
+     - -f
+     - /dev/null
+
+### NGINX ##############################################
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+     - ./nginx/:/etc/nginx/custom
+     - ./..:/usr/share/nginx/
+    ports:
+     - "5000:80"
+    depends_on:
+     - phpfpm
+     - mysql
+    networks:
+     - backend
+
+### MYSQL ##############################################
+  mysql:
+    image: 'mysql:8'
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+     - ./mysql:/sql.share
+    ports:
+     - '3399:3306'
+    networks:
+     - backend
+    environment:
+     - MYSQL_ROOT_PASSWORD=root
+
+### PHP-FPM ##############################################
+  laradock-php-fpm:
+    build:
+      context: ./laradock-php-fpm
+      args:
+        - LARADOCK_PHP_VERSION=7.2
+    networks:
+     - backend
+
+### PHP-FPM ##############################################
+
+  node:
+    container_name: "node85"
+    build:
+      args:
+        version: '8.15'
+      context: ./node
+      dockerfile: Dockerfile
+    working_dir: /home/node/app
+    volumes:
+     - ../:/home/node/app
+
+networks:
+    backend:
+        driver: bridge
+    
+   
