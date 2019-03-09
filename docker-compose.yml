@@ -16,6 +16,8 @@ services:
     volumes:
      - ./../:/app
      - ./Dockerfiles/composer-laravel/cache:/tmp/cache
+    ports:
+     - "8000:8000"
     entrypoint:
      - tail
      - -f
