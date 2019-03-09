@@ -10,11 +10,12 @@ services:
      - ./../:/app
 
 ### COMPOSER ##############################################
-  composer:
+  composer-laravel:
     build:
-      context: ./Dockerfiles/composer
+      context: ./Dockerfiles/composer-laravel
     volumes:
      - ./../:/app
+     - ./Dockerfiles/composer-laravel/cache:/tmp/cache
     entrypoint:
      - tail
      - -f
