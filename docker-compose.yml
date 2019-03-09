@@ -16,8 +16,6 @@ services:
     volumes:
      - ./../:/app
      - ./Dockerfiles/composer-laravel/cache:/tmp/cache
-    ports:
-     - "8000:8000"
     entrypoint:
      - tail
      - -f
@@ -54,6 +52,8 @@ services:
     working_dir: '/usr/share/nginx/'
     volumes:
      - ./../:/usr/share/nginx/
+    ports:
+     - "8181:8080"
     build:
       context: ./Dockerfiles/laradock-php-fpm
       args:
