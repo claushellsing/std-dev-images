@@ -73,7 +73,7 @@ services:
 ### NODE ##############################################
 
   node:
-    container_name: "node85"
+    container_name: "node"
     build:
       args:
         version: '8.15'
