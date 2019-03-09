@@ -90,6 +90,8 @@ services:
       - '2181:2181'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+     - backend
 
 ### KAFKA BROKER #######################################
 
@@ -107,6 +109,17 @@ services:
       - zookeeper
     volumes:
      - ./Dockerfiles/kafka/:/app
+    networks:
+     - backend
+
+### KAFKA MANAGER #######################################
+
+    kafka-manager:
+        ports:
+            - '9111:9000'
+        environment:
+            - 'ZK_HOSTS=zookeeper:2181'
+        image: sheepkiller/kafka-manager
 
 
 networks:
