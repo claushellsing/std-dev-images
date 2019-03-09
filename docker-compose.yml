@@ -82,6 +82,33 @@ services:
     volumes:
      - ./../:/home/node/app
 
+### ZOOKEEPER ##########################################
+
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+### KAFKA BROKER #######################################
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENERS=INTERNAL://0.0.0.0:9092
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka:9092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+    depends_on:
+      - zookeeper
+    volumes:
+     - ./Dockerfiles/kafka/:/app
+
+
 networks:
     backend:
         driver: bridge
