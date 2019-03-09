@@ -60,6 +60,7 @@ services:
         - LARADOCK_PHP_VERSION=7.2
         - INSTALL_MYSQL_CLIENT=true
         - INSTALL_MYSQLI=true
+        - INSTALL_KAFKA=true
     networks:
      - backend
 

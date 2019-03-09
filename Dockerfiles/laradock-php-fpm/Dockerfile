@@ -627,10 +627,23 @@ RUN if [ ${INSTALL_MYSQL_CLIENT} = true ]; then \
 ;fi
 
 ###########################################################################
+# KAFKA:
+###########################################################################
+
+ARG INSTALL_KAFKA=false
+
+RUN if [ ${INSTALL_KAFKA} = true ]; then \
+    apt-get install -y librdkafka-dev && \
+    pecl install rdkafka && \
+    docker-php-ext-enable rdkafka \
+;fi
+
+###########################################################################
 # Check PHP version:
 ###########################################################################
 
 RUN set -xe; php -v | head -n 1 | grep -q "PHP ${LARADOCK_PHP_VERSION}."
+
 
 #
 #--------------------------------------------------------------------------
