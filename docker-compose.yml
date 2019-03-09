@@ -113,14 +113,14 @@ services:
      - backend
 
 ### KAFKA MANAGER #######################################
-
-    kafka-manager:
-        ports:
-            - '9111:9000'
-        environment:
-            - 'ZK_HOSTS=zookeeper:2181'
-        image: sheepkiller/kafka-manager
-
+  kafka-manager:
+    ports:
+     - '9111:9000'
+    environment:
+     - 'ZK_HOSTS=zookeeper:2181'
+    image: sheepkiller/kafka-manager
+    networks:
+     - backend
 
 networks:
     backend:
