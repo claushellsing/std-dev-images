@@ -70,14 +70,14 @@ services:
      - ./../:/app
     image: adminer
     ports:
-     - '8080:8080'
+     - '8787:8080'
     networks:
      - backend
 
 ### NODE ##############################################
 
-  node:
-    container_name: "node"
+  vue-node:
+    container_name: "vue-node"
     build:
       args:
         version: '8.15'
@@ -85,6 +85,8 @@ services:
     working_dir: /home/node/app
     volumes:
      - ./../:/home/node/app
+    networks:
+     - backend
 
 ### ZOOKEEPER ##########################################
 
